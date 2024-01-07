@@ -7,6 +7,7 @@ class main_class:
     def __init__(self):
         self.app = main_gui.SampleApp()
         self.app.mainloop()
-#f1f1f0
+
 if __name__ == "__main__":
     main_class()    
+    
