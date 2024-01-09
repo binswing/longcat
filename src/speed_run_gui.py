@@ -88,6 +88,7 @@ class speed_run_gui_class(tk.Frame):
         self.display.create_line(width*box_size-1+self.x_align,0+self.y_align,width*box_size-1+self.x_align,height*box_size+self.y_align,fill="black")
 
     def reset_cmd(self):
+        self.after_cancel(self.timer)
         self.display.delete("all")
         self.time_box.delete("all")
         self.start_play_button_cmd()
