@@ -15,7 +15,7 @@ class SampleApp(tk.Tk):
 
 
         self.frames = {}
-        for F in (lobby_gui_class, edit_level_selection_gui_class, play_level_selection_gui_class, edit_new_board_gui_class,edit_gui_class,play_gui_class):
+        for F in (lobby_gui_class, edit_level_selection_gui_class, play_level_selection_gui_class, edit_new_board_gui_class,edit_gui_class,play_gui_class,speed_run_gui_class):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame 
