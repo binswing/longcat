@@ -1,7 +1,6 @@
 import tkinter as tk       
 from tkinter import font as tkfont 
 import threading
-from src.head import *
 from pynput import keyboard
 import time
 import json

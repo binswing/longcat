@@ -160,11 +160,12 @@ class speed_run_gui_class(tk.Frame):
         self.inframe = True
         with open("./src/lib/map.json","r") as f:
             map = json.load(f)
-        if self.logic.lvl < len(map.keys()):
+        if self.logic.lvl < len(map):
             self.logic.next()
             self.reset_board()
             self.draw_board(self.logic.game.get_board())
         else:
+            self.logic.win(self.time)
             self.finish_screen()
 
     def reset_frame(self):
@@ -239,6 +240,7 @@ class logic:
         self.game = Play()
         with open("./src/lib/current_sel.json","r") as f:
             current_sel = json.load(f)
+        self.name = current_sel["sel"]["speedrun"]["name"]
         self.game.import_board(1)
         self.lvl = 1
         self.height,self.width = self.game.get_board_size()
@@ -253,3 +255,20 @@ class logic:
         self.retry()
         self.height,self.width = self.game.get_board_size()
         self.box_size = min(int(self.CANVA_SIZE/self.height),int(self.CANVA_SIZE/self.width))
+
+    def win(self,time):
+        with open("./src/lib/leaderboard.json","r") as f:
+            leaderboard = json.load(f)
+        time_list = [int(i) for i in leaderboard.keys()]
+        if time_list is None:
+            leaderboard[str(time)] = [self.name]        
+        elif time in time_list:
+            if self.name not in leaderboard[str(time)] and len(leaderboard[str(time)]) <= 20:
+                leaderboard[str(time)].append(self.name)
+        else:
+            time_list.append(time)
+            leaderboard[str(time)] = [self.name]
+            if len(time_list) > 20:
+                leaderboard.pop(str(min(time_list)), None)
+        with open("./src/lib/leaderboard.json","w") as f:
+            f.write(json.dumps(leaderboard))

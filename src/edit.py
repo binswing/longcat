@@ -1,5 +1,5 @@
 import json
-from src.head import *
+from src.board import *
 class Edit:
     def __init__(self):
         self.board = Board()

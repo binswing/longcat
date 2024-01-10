@@ -5,4 +5,6 @@ from src.lobby_gui import *
 from src.edit_new_board_gui import *
 from src.play_level_selection_gui import *
 from src.play_gui import *
+from src.speed_run_get_name_gui import *
 from src.speed_run_gui import *
+from src.leaderboard_gui import *

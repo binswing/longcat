@@ -13,9 +13,8 @@ class SampleApp(tk.Tk):
         container = tk.Frame(self,bg= "#43766C",width=1000,height=1000)
         container.pack(side="top", fill="both", expand=False)
 
-
         self.frames = {}
-        for F in (lobby_gui_class, edit_level_selection_gui_class, play_level_selection_gui_class, edit_new_board_gui_class,edit_gui_class,play_gui_class,speed_run_gui_class):
+        for F in (lobby_gui_class, edit_level_selection_gui_class, play_level_selection_gui_class, edit_new_board_gui_class,edit_gui_class,play_gui_class,speed_run_get_name_gui_class,speed_run_gui_class,leaderboard_gui_class):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame 

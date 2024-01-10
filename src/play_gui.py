@@ -65,7 +65,7 @@ class play_gui_class(tk.Frame):
         self.first_button['state'] = "normal"
         self.last_button['state'] = "normal"
 
-        self.logic = logic()
+        self.logic = play_gui_logic()
         height,width = self.logic.game.get_board_size()
         box_size = min(int(self.CANVA_SIZE/height),int(self.CANVA_SIZE/width))
 
@@ -254,7 +254,7 @@ class play_gui_class(tk.Frame):
         with keyboard.Listener(on_release= self.on_release) as listener:
             listener.join()
 
-class logic:
+class play_gui_logic:
     def __init__(self,CANVA_SIZE=890):
         self.CANVA_SIZE = CANVA_SIZE
         self.game = Play()

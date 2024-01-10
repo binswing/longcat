@@ -7,6 +7,7 @@ from src.play import *
 from pynput import keyboard
 import time
 import json
+import copy 
 
 class edit_gui_class(tk.Frame):
     def __init__(self, parent, controller):
@@ -70,7 +71,7 @@ class edit_gui_class(tk.Frame):
         self.clear_wall_button['state'] ="normal"
         self.clear_head_button['state'] ="normal"
 
-        self.logic = logic()
+        self.logic = edit_gui_logic()
         height,width = self.logic.game.get_board_size()
         box_size = min(int(self.CANVA_SIZE/height),int(self.CANVA_SIZE/width))
         
@@ -128,9 +129,7 @@ class edit_gui_class(tk.Frame):
     
     def retry_cmd(self):
         self.logic.game_mode()
-        with open("./src/lib/current_sel.json","r") as f:
-            current_sel = json.load(f)
-        self.draw_board(current_sel["map"])
+        self.draw_board(copy.deepcopy(self.logic.game_clone.get_board()))
 
     def edit_mode_cmd(self):
         self.mode= True
@@ -284,7 +283,7 @@ class edit_gui_class(tk.Frame):
         with keyboard.Listener(on_release= self.on_release) as listener:
             listener.join()
 
-class logic:
+class edit_gui_logic:
     def __init__(self,CANVA_SIZE=890):
         self.CANVA_SIZE = CANVA_SIZE
         self.game = Edit()
@@ -305,12 +304,5 @@ class logic:
             return self.game.set_and_del_head()
     
     def game_mode(self):
-        with open("./src/lib/current_sel.json","r") as f:
-            current_sel = json.load(f)
-        current_sel["map"] = self.game.get_board()
-        with open("./src/lib/current_sel.json","w") as f:
-            f.write(json.dumps(current_sel))
-        with open("./src/lib/current_sel.json","r") as f:
-            current_sel = json.load(f)
         self.game_clone = Play()
-        self.game_clone.load_board(current_sel["map"])
+        self.game_clone.load_board(copy.deepcopy(self.game.get_board()))

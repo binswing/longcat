@@ -1,5 +1,6 @@
 import json
 import time
+import copy 
 class Board:
     def __init__(self):
         self.board = []
@@ -16,14 +17,7 @@ class Board:
         self.add_board_list()
 
     def add_board_list(self):
-        with open("./src/lib/current_sel.json","r") as f:
-            current_sel = json.load(f)
-        current_sel["board_list"]=self.board
-        with open("./src/lib/current_sel.json","w") as f:
-            f.write(json.dumps(current_sel))        
-        with open("./src/lib/current_sel.json","r") as f:
-            current_sel = json.load(f)
-        self.board_list.append(current_sel["board_list"])
+        self.board_list.append(copy.deepcopy(self.board))
 
     def set_board_size(self,height,width):
         self.width = width
@@ -119,15 +113,8 @@ class Board:
     
     def undo_step(self):
         if len(self.board_list) >1:
-            self.board_list.pop(-1)
-            with open("./src/lib/current_sel.json","r") as f:
-                current_sel = json.load(f)
-            current_sel["board_list"]=self.board_list
-            with open("./src/lib/current_sel.json","w") as f:
-                f.write(json.dumps(current_sel))        
-            with open("./src/lib/current_sel.json","r") as f:
-                current_sel = json.load(f)            
-            self.board = current_sel["board_list"][-1]
+            self.board_list.pop(-1)         
+            self.board = copy.deepcopy(self.board)[-1]
         return self.board
 
     #auto set head
@@ -137,81 +124,31 @@ class Board:
             for x in range(self.width):
                 if self.board[y][x] == 0:
                     step_arr=[[x,y]]
-                    tempboard = self.board.copy()
-                    with open("./src/lib/current_sel.json","r") as f:
-                        current_sel = json.load(f)
-                    current_sel["auto"]["status_arr"] = [tempboard]
-                    with open("./src/lib/current_sel.json","w") as f:
-                        f.write(json.dumps(current_sel))
-
-                    with open("./src/lib/current_sel.json","r") as f:
-                        current_sel = json.load(f)
-                    current_sel["auto"]["status_arr"][0][y][x]=2  
-                    with open("./src/lib/current_sel.json","w") as f:
-                        f.write(json.dumps(current_sel))   
-
+                    status_arr = [copy.deepcopy(self.board)]
+                    status_arr[0][y][x]=2
                     step = 1
                     while True:
-                        with open("./src/lib/current_sel.json","r") as f:
-                            current_sel = json.load(f)
-                        status_arr = current_sel["auto"]["status_arr"]
                         temp_arr=[]
                         for board in status_arr:
                             if type(board) is list:
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel = json.load(f)
-                                current_sel["auto"]["board"]= board.copy()  
-                                with open("./src/lib/current_sel.json","w") as f:
-                                    f.write(json.dumps(current_sel))  
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel = json.load(f)
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel_compare = json.load(f)
-                                new_sel = self.move_auto_set_head(current_sel["auto"]["board"],"up")
-                                if new_sel != current_sel_compare["auto"]["board"]:
-                                    temp_arr.append(new_sel)
+                                changed_box = self.move_auto_set_head(copy.deepcopy(board),"up")
+                                if changed_box != copy.deepcopy(board):
+                                    temp_arr.append(copy.deepcopy(changed_box))
                                 else:
                                     temp_arr.append(0)
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel = json.load(f)
-                                current_sel["auto"]["board"]= board.copy()  
-                                with open("./src/lib/current_sel.json","w") as f:
-                                    f.write(json.dumps(current_sel))  
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel = json.load(f)
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel_compare = json.load(f)
-                                new_sel = self.move_auto_set_head(current_sel["auto"]["board"],"down")
-                                if new_sel != current_sel_compare["auto"]["board"]:
-                                    temp_arr.append(new_sel)
+                                changed_box = self.move_auto_set_head(copy.deepcopy(board),"down")
+                                if changed_box != copy.deepcopy(board):
+                                    temp_arr.append(copy.deepcopy(changed_box))
                                 else:
                                     temp_arr.append(0)
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel = json.load(f)
-                                current_sel["auto"]["board"]= board.copy()  
-                                with open("./src/lib/current_sel.json","w") as f:
-                                    f.write(json.dumps(current_sel))  
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel = json.load(f)
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel_compare = json.load(f)
-                                new_sel = self.move_auto_set_head(current_sel["auto"]["board"],"left")
-                                if new_sel != current_sel_compare["auto"]["board"]:
-                                    temp_arr.append(new_sel)
+                                changed_box = self.move_auto_set_head(copy.deepcopy(board),"right")
+                                if changed_box != copy.deepcopy(board):
+                                    temp_arr.append(copy.deepcopy(changed_box))
                                 else:
                                     temp_arr.append(0)
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel = json.load(f)
-                                current_sel["auto"]["board"]= board.copy()  
-                                with open("./src/lib/current_sel.json","w") as f:
-                                    f.write(json.dumps(current_sel))  
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel = json.load(f)
-                                with open("./src/lib/current_sel.json","r") as f:
-                                    current_sel_compare = json.load(f)
-                                new_sel = self.move_auto_set_head(current_sel["auto"]["board"],"right")
-                                if new_sel != current_sel_compare["auto"]["board"]:
-                                    temp_arr.append(new_sel)
+                                changed_box = self.move_auto_set_head(copy.deepcopy(board),"left")
+                                if changed_box != copy.deepcopy(board):
+                                    temp_arr.append(copy.deepcopy(changed_box))
                                 else:
                                     temp_arr.append(0)
                         if self.check_lose_auto_set_head(temp_arr): 
@@ -221,12 +158,9 @@ class Board:
                             pos_arr.append(step_arr)
                             break
                         step+=1
-                        with open("./src/lib/current_sel.json","r") as f:
-                            current_sel = json.load(f)
-                        current_sel["auto"]["status_arr"]= temp_arr.copy()
-                        with open("./src/lib/current_sel.json","w") as f:
-                            f.write(json.dumps(current_sel))                          
-                                   
+                        status_arr = copy.deepcopy(temp_arr)    
+                        print(status_arr)                     
+          
         if len(pos_arr) !=0:
             pos_dict={}
             for k in pos_arr:
