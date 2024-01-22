@@ -36,8 +36,10 @@ class speed_run_get_name_gui_class(tk.Frame):
         self.controller.show_frame("lobby_gui_class")
 
     def submit_cmd(self):
-        self.reset_frame()
+
         input = self.input.get()
+        self.reset_frame()
+        print(1, input)
         if input == "": input = "No name"
         with open("./src/lib/current_sel.json","r") as f:
             current_sel = json.load(f)
