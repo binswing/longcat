@@ -8,3 +8,4 @@ from src.play_gui import *
 from src.speed_run_get_name_gui import *
 from src.speed_run_gui import *
 from src.leaderboard_gui import *
+from src.setting_gui import *

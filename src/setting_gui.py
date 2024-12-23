@@ -6,15 +6,18 @@ from pynput import keyboard
 import time
 import json
 
-class speed_run_get_name_gui_class(tk.Frame):
+class setting_gui_class(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         
         self.back_button = tk.Button(self,text='BACK',height = 8, width= 12,command= lambda: self.back_cmd(), bg = "#F8FAE5",fg="#76453B",borderwidth=0)
+        self.lang_label = tk.Label(self,text="LANGUAGE")    
+        self
         self.submit_button = tk.Button(self,text='SUBMIT NAME',height = 8, width= 15,command= lambda: self.submit_cmd(), bg = "#F8FAE5",fg="#76453B",borderwidth=0)
-        self.back_button['font'] = tkfont.Font(family="Helvetica",size=20,weight="bold")
-        self.submit_button['font'] = tkfont.Font(family="Helvetica",size=20,weight="bold")
+        
+        self.back_button['font'] = tkfont.Font(family="Helvetica",size=3,weight="bold")
+        self.submit_button['font'] = tkfont.Font(family="Helvetica",size=5,weight="bold")
         
         self.input = tk.Entry(self,width=7,font='Helvetica 200')
         with open("./src/lib/map.json","r") as f:
